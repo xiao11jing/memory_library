@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>记忆库</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="bg" aria-hidden="true"></div>
+
+  <div id="app" class="hidden">
+    <aside id="sidebar" class="glass">
+      <h1>记忆库</h1>
+      <div id="lib-info">未打开记忆库</div>
+      <nav>
+        <button data-view="home" class="nav-btn active">首页</button>
+        <button data-view="search" class="nav-btn">检索</button>
+        <button data-view="organize" class="nav-btn">整理</button>
+        <button data-view="browse" class="nav-btn">浏览索引</button>
+        <button data-view="settings" class="nav-btn">设置</button>
+      </nav>
+      <div id="topics"></div>
+    </aside>
+    <main>
+      <div id="topbar" class="glass row">
+        <span id="lib-name" class="muted"></span>
+        <span class="spacer"></span>
+        <button id="btn-switch">切换库</button>
+        <button id="btn-new-top">新建库</button>
+      </div>
+
+      <section id="view-home" class="view">
+        <div class="home-wrap">
+          <div class="card glass home-card">
+            <h2 id="home-greet">把今天也收进记忆里</h2>
+            <p class="muted" id="home-sub"></p>
+            <div class="stats">
+              <div class="stat"><b id="stat-inbox">0</b><span>待整理</span></div>
+              <div class="stat"><b id="stat-archive">0</b><span>已归档</span></div>
+              <div class="stat"><b id="stat-topics">0</b><span>主题</span></div>
+            </div>
+            <div class="row">
+              <button id="btn-home-organize" class="primary">开始整理</button>
+              <button id="btn-home-export">导入 DSH 新对话</button>
+              <button id="btn-home-search">去检索</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-search" class="view hidden">
+        <div class="searchbar">
+          <input id="q" placeholder="输入关键词，如：记账 / django 分页">
+          <button id="btn-search" class="primary">搜索</button>
+        </div>
+        <div id="results"><p class="muted glass pad">输入关键词检索全部归档内容。</p></div>
+      </section>
+
+      <section id="view-organize" class="view hidden">
+        <div class="card glass">
+          <h2>一键整理</h2>
+          <p class="muted">扫描 inbox（文件与文件夹）→ AI 分类摘要 → 归档 → 重建索引 → 写日志。原文零改动，git 可回滚。</p>
+          <div class="row">
+            <button id="btn-export">导入 DSH 新对话</button>
+            <button id="btn-organize" class="primary">开始整理</button>
+          </div>
+          <pre id="organize-log"></pre>
+        </div>
+      </section>
+
+      <section id="view-browse" class="view hidden">
+        <div id="browse-list"></div>
+      </section>
+
+      <section id="view-settings" class="view hidden">
+        <div class="card glass">
+          <h2>API 设置</h2>
+          <p class="muted">Key 只保存在本机应用数据目录，绝不进入记忆库或 git。默认对接 DeepSeek 官方 API（OpenAI 兼容）。</p>
+          <label>API 地址<input id="cfg-url"></label>
+          <label>API Key<input id="cfg-key" type="password"></label>
+          <label>模型<input id="cfg-model"></label>
+          <div class="row">
+            <button id="btn-save-cfg" class="primary">保存</button>
+            <span id="cfg-status"></span>
+          </div>
+        </div>
+        <div class="card glass">
+          <h2>语义检索</h2>
+          <p class="muted">本地小模型（bge-small-zh int8，约 23MB）：换说法的同义查询也能命中，内容不出本机。模型或索引缺失时自动退回关键词检索。</p>
+          <label class="check"><input id="cfg-semantic" type="checkbox"> 启用语义检索</label>
+          <p id="sem-status" class="muted"></p>
+          <div class="row">
+            <button id="btn-sem-download">下载模型</button>
+            <button id="btn-sem-build" class="primary">建立 / 更新索引</button>
+            <button id="btn-sem-cancel" class="hidden">停止</button>
+          </div>
+          <div id="sem-progress" class="hidden">
+            <div class="bar"><i id="sem-bar"></i></div>
+            <span id="sem-progress-text" class="muted"></span>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-file" class="view hidden">
+        <button id="btn-back">← 返回</button>
+        <div id="file-content" class="card glass"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="welcome" class="hidden">
+    <div class="card glass welcome-card">
+      <h2>欢迎使用记忆库</h2>
+      <p class="muted" id="welcome-hint"></p>
+      <div class="row">
+        <button id="btn-open" class="primary">打开已有记忆库</button>
+        <button id="btn-new">新建记忆库</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+  <script src="renderer.mjs" type="module"></script>
+</body>
+</html>

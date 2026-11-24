@@ -1,0 +1,85 @@
+{
+  "name": "memory-library",
+  "version": "0.1.0",
+  "private": true,
+  "description": "本地优先的个人记忆库：纯 Markdown 存储 + AI 整理 + 混合语义检索 + MCP 接口（Electron 桌面应用）",
+  "author": "xiao",
+  "type": "module",
+  "main": "app/main.mjs",
+  "scripts": {
+    "test": "node --test \"core/*.test.mjs\" \"scripts/test-*.mjs\" \"mcp/*.test.mjs\"",
+    "check": "node scripts/check-structure.mjs",
+    "export:dsh": "node scripts/export-dsh.mjs",
+    "start": "electron .",
+    "dist": "node scripts/build-win.mjs"
+  },
+  "devDependencies": {
+    "electron": "^45.3.1",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.xiao.memorylibrary",
+    "productName": "记忆库",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "app/**/*",
+      "core/**/*.mjs",
+      "!core/**/*.test.mjs",
+      "scripts/export-dsh.mjs",
+      "package.json",
+      "scripts/download-model.mjs",
+      "!node_modules/onnxruntime-node/bin/napi-v6/darwin/**",
+      "!node_modules/onnxruntime-node/bin/napi-v6/linux/**",
+      "!node_modules/onnxruntime-node/bin/napi-v6/win32/arm64/**"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "记忆库",
+      "installerLanguages": [
+        "zh_CN"
+      ],
+      "artifactName": "记忆库-Setup-${version}.exe",
+      "deleteAppDataOnUninstall": false
+    },
+    "asarUnpack": "**/node_modules/onnxruntime-node/**"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "onnxruntime-node": "^1.31.1",
+    "zod": "^4.6.7"
+  },
+  "license": "MIT",
+  "keywords": [
+    "personal-knowledge-base",
+    "markdown",
+    "ai",
+    "mcp",
+    "semantic-search",
+    "onnx",
+    "electron",
+    "deepseek"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiao11jing/memory_library.git"
+  },
+  "homepage": "https://github.com/xiao11jing/memory_library#readme",
+  "bugs": {
+    "url": "https://github.com/xiao11jing/memory_library/issues"
+  }
+}
